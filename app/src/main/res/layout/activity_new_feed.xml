@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".dev.duc.view.NewsFeedActivity"
+    tools:context=".dev.duc.view.NewFeedActivity"
     android:background="@color/colorWhite">
 
     <android.support.v7.widget.Toolbar

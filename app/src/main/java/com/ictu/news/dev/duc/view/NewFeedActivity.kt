@@ -7,18 +7,18 @@ import android.widget.Toast
 import com.ictu.news.R
 import com.ictu.news.dev.duc.collection.ListNewFeedCollection
 import com.ictu.news.dev.duc.collection.NewFeedCollection
-import com.ictu.news.dev.duc.presenter.RequestNewsFeedPresenter
+import com.ictu.news.dev.duc.presenter.RequestNewFeedPresenter
 import com.ictu.news.dev.duc.view.adapter.RecyclerViewAdapter
-import com.ictu.news.dev.duc.view.inteface.RequestNewsfeedResult
-import kotlinx.android.synthetic.main.activity_news_feed.*
+import com.ictu.news.dev.duc.view.inteface.RequestNewfeedResult
+import kotlinx.android.synthetic.main.activity_new_feed.*
 
 
-class NewsFeedActivity : AppCompatActivity() {
+class NewFeedActivity : AppCompatActivity() {
 
     private val requestNewsFeedResult by lazy {
-        object : RequestNewsfeedResult {
+        object : RequestNewfeedResult {
             override fun onDone(newFeedCollection: ListNewFeedCollection) {
-                Toast.makeText(this@NewsFeedActivity, "Load Done", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NewFeedActivity, "Load Done", Toast.LENGTH_SHORT).show()
                 if (newFeedCollection.code == "200")
                     for (item in newFeedCollection.post)
                         collection.add(item)
@@ -27,7 +27,7 @@ class NewsFeedActivity : AppCompatActivity() {
             }
 
             override fun onFail() {
-                Toast.makeText(this@NewsFeedActivity, "Load Fail", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@NewFeedActivity, "Load Fail", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -52,12 +52,12 @@ class NewsFeedActivity : AppCompatActivity() {
     private fun run() {
         init()
         configRecyclerView()
-        RequestNewsFeedPresenter(requestNewsFeedResult).request(1)
+        RequestNewFeedPresenter(requestNewsFeedResult).request(1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_news_feed)
+        setContentView(R.layout.activity_new_feed)
         run()
     }
 }
