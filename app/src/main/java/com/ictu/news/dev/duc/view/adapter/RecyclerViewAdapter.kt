@@ -11,7 +11,7 @@ import com.ictu.news.dev.duc.collection.NewFeedCollection
 import kotlinx.android.synthetic.main.item_first_post.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
 
-class RecyclerViewAdapter(val context: Context, val collection: ArrayList<NewFeedCollection>) :
+class RecyclerViewAdapter(private val context: Context, private val collection: ArrayList<NewFeedCollection>) :
     RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
     //ViewHolder, this class will hold each item
@@ -20,7 +20,7 @@ class RecyclerViewAdapter(val context: Context, val collection: ArrayList<NewFee
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(context)
 
-        val view = if (p1 == 0)
+        val view = if (p1 == 1)
             layoutInflater.inflate(R.layout.item_first_post, p0, false)
         else
             layoutInflater.inflate(R.layout.item_post, p0, false)
@@ -30,6 +30,10 @@ class RecyclerViewAdapter(val context: Context, val collection: ArrayList<NewFee
 
     override fun getItemCount(): Int {
         return collection.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) 1 else 2
     }
 
     override fun onBindViewHolder(p0: MyViewHolder, p1: Int) {
@@ -42,7 +46,7 @@ class RecyclerViewAdapter(val context: Context, val collection: ArrayList<NewFee
                 .load(data.image)
                 .into(view.image_preview_first_post)
 
-            view.title_first_post.text = data.postName
+            view.title_first_post.text = data.post_name
             view.description_first_post.text = data.description
         } else {
             Glide
@@ -50,8 +54,9 @@ class RecyclerViewAdapter(val context: Context, val collection: ArrayList<NewFee
                 .load(data.image)
                 .into(view.image_preview_post)
 
-            view.title_post.text = data.postName
+            view.title_post.text = data.post_name
         }
+
     }
 
 }

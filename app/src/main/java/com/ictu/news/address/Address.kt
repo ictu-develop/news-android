@@ -4,6 +4,8 @@ class Address {
 
     companion object {
 
+        val domain = "http://80.211.52.162:2500/"
+
         fun newFeed(index: Int): String {
             return "http://80.211.52.162:2500/newsfeed?page=$index"
         }
@@ -16,8 +18,8 @@ class Address {
             return "http://80.211.52.162:2500/newsfeed/toidicodedao?page=$index"
         }
 
-        fun post(name: String, postUrl: String): String {
-            return "http://80.211.52.162:2500/post/$name?post_url=$postUrl"
+        fun post(webName: String, postUrl: String): String {
+            return "http://80.211.52.162:2500/post/$webName?post_url=$postUrl"
         }
     }
 
