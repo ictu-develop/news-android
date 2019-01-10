@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.ictu.news.R
 import com.ictu.news.dev.duc.collection.NewFeedCollection
+import com.ictu.news.dev.duc.view.inteface.OnRecyclerViewItemClickListener
 import kotlinx.android.synthetic.main.item_first_post.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
 
-class RecyclerViewAdapter(private val context: Context, private val collection: ArrayList<NewFeedCollection>) :
+class RecyclerViewAdapter(private val context: Context, private val collection: ArrayList<NewFeedCollection>,
+                          private val recyclerViewItemClickListener: OnRecyclerViewItemClickListener) :
     RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
     //ViewHolder, this class will hold each item
@@ -20,6 +22,7 @@ class RecyclerViewAdapter(private val context: Context, private val collection: 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(context)
 
+        // First item: item_first_post
         val view = if (p1 == 1)
             layoutInflater.inflate(R.layout.item_first_post, p0, false)
         else
@@ -32,6 +35,7 @@ class RecyclerViewAdapter(private val context: Context, private val collection: 
         return collection.size
     }
 
+    // use this to know first item
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) 1 else 2
     }
@@ -55,6 +59,11 @@ class RecyclerViewAdapter(private val context: Context, private val collection: 
                 .into(view.image_preview_post)
 
             view.title_post.text = data.post_name
+        }
+
+        // Call event
+        view.setOnClickListener {
+            recyclerViewItemClickListener.onItemClick(view, p1)
         }
 
     }

@@ -3,14 +3,14 @@ package com.ictu.news.dev.duc.model
 import android.util.Log
 import com.ictu.news.address.Address
 import com.ictu.news.dev.duc.collection.ListNewFeedCollection
-import com.ictu.news.dev.duc.view.inteface.RequestNewfeedResult
+import com.ictu.news.dev.duc.view.inteface.OnRequestNewFeedResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RequestNewFeedModel(val requestNewsFeedResult: RequestNewfeedResult) {
+class RequestNewFeedModel(val requestNewsFeedResult: OnRequestNewFeedResult) {
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Address.domain)
