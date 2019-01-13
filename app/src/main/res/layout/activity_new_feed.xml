@@ -14,6 +14,8 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        android:elevation="6dp"
         app:layout_constraintHeight_default="percent"
         app:layout_constraintHeight_percent="0.07"
         app:layout_constraintBottom_toBottomOf="parent"

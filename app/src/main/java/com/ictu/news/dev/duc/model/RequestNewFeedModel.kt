@@ -12,15 +12,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RequestNewFeedModel(val requestNewsFeedResult: OnRequestNewFeedResult) {
 
+    // Init retrofit builder
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Address.domain)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    // Create Api Service
     private val apiService by lazy {
         retrofit.create(ApiInterface::class.java)
     }
 
+    // Request to NewFeed
     fun request(index: Int) {
         val call = apiService.loadNewsFeed(index.toString())
 

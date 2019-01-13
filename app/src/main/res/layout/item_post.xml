@@ -4,10 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="10dp">
+    android:background="@color/colorWhite">
 
     <LinearLayout
         android:id="@+id/normal_layout"
@@ -16,7 +13,10 @@
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0">
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/title_post"
@@ -41,5 +41,10 @@
             android:scaleType="centerInside"/>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/item_loading"
+        layout="@layout/item_loading"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>
