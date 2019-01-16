@@ -49,7 +49,7 @@ class NewFeedActivity : AppCompatActivity() {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("NewFeedFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_activity, newFeedFragment, "NewFeedFrag")
+                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, newFeedFragment, "NewFeedFrag")
                                 .commit()
                         else
                             supportFragmentManager.beginTransaction().show(newFeedFragment)
@@ -60,7 +60,7 @@ class NewFeedActivity : AppCompatActivity() {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("TechNewsFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_activity, techNewsFragment, "TechNewsFrag")
+                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, techNewsFragment, "TechNewsFrag")
                                 .commit()
                         else
                             supportFragmentManager.beginTransaction().show(techNewsFragment)
@@ -71,7 +71,7 @@ class NewFeedActivity : AppCompatActivity() {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("TechStoryFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_activity, techStoryFragment, "TechStoryFrag")
+                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, techStoryFragment, "TechStoryFrag")
                                 .commit()
                         else
                             supportFragmentManager.beginTransaction().show(techStoryFragment)
@@ -89,7 +89,7 @@ class NewFeedActivity : AppCompatActivity() {
         val posSelectDefault = tab_layout.selectedTabPosition
         if (posSelectDefault == 0)
             if (supportFragmentManager.findFragmentByTag("NewFeedFrag") == null)
-                supportFragmentManager.beginTransaction().add(R.id.new_feed_activity, newFeedFragment, "NewFeedFrag")
+                supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, newFeedFragment, "NewFeedFrag")
                     .commit()
 
     }

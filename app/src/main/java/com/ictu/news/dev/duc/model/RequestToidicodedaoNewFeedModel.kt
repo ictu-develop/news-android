@@ -7,11 +7,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RequestNewFeedModel(val requestNewsFeedResult: OnRequestNewFeedResult) {
+class RequestToidicodedaoNewFeedModel (val requestNewsFeedResult: OnRequestNewFeedResult){
 
-    // Request to NewFeed
+    // Request to Vnreview Newfeed
     fun request(index: Int) {
-        val call = RetrofitCommon.apiService.loadNewFeed(index.toString())
+        val call = RetrofitCommon.apiService.loadToidicodedaoNewFeed(index.toString())
 
         call.enqueue(object : Callback<ListNewFeedCollection> {
             override fun onResponse(call: Call<ListNewFeedCollection>, response: Response<ListNewFeedCollection>) {
@@ -28,5 +28,4 @@ class RequestNewFeedModel(val requestNewsFeedResult: OnRequestNewFeedResult) {
             }
         })
     }
-
 }

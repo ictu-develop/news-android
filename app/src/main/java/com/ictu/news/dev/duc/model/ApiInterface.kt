@@ -7,5 +7,11 @@ import retrofit2.http.Query
 
 interface ApiInterface {
     @GET("newsfeed")
-    fun loadNewsFeed(@Query("page") index: String): Call<ListNewFeedCollection>
+    fun loadNewFeed(@Query("page") index: String): Call<ListNewFeedCollection>
+
+    @GET("newsfeed/vnreview")
+    fun loadVnreviewNewFeed(@Query("page") index: String): Call<ListNewFeedCollection>
+
+    @GET("newsfeed/toidicodedao")
+    fun loadToidicodedaoNewFeed(@Query("page") index: String): Call<ListNewFeedCollection>
 }

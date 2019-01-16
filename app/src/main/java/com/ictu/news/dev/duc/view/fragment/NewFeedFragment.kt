@@ -28,11 +28,11 @@ class NewFeedFragment : Fragment() {
     private var index = 1
     // Status request of newfeed
     private var requested = false
+    private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_feed, container, false)
-    }
+    // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
+    private val collection by lazy { ArrayList<NewFeedCollection>() }
+
 
     // Event click item in recyclerView
     private val recyclerViewItemClickListener by lazy {
@@ -65,7 +65,7 @@ class NewFeedFragment : Fragment() {
     }
 
     // Event after requested
-    private val requestNewsFeedResult by lazy {
+    private val requestNewFeedResult by lazy {
         object : OnRequestNewFeedResult {
             override fun onDone(newFeedCollection: ListNewFeedCollection) {
                 //Toast.makeText(requireContext(), "Load Done", Toast.LENGTH_SHORT).show()
@@ -94,11 +94,6 @@ class NewFeedFragment : Fragment() {
             }
         }
     }
-
-    private lateinit var recyclerViewAdapter: RecyclerViewAdapter
-
-    // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
-    private val collection by lazy { ArrayList<NewFeedCollection>() }
 
     private fun init() {
         recyclerViewAdapter = RecyclerViewAdapter(requireContext(), collection, recyclerViewItemClickListener)
@@ -135,17 +130,23 @@ class NewFeedFragment : Fragment() {
                         index++
 
                         // Request next page
-                        RequestNewFeedPresenter(requestNewsFeedResult).request(index)
+                        RequestNewFeedPresenter(requestNewFeedResult).request(index)
                     }
                 }
             }
         })
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_new_feed, container, false)
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
         configRecyclerView()
-        RequestNewFeedPresenter(requestNewsFeedResult).request(index)
+        RequestNewFeedPresenter(requestNewFeedResult).request(index)
     }
 }
