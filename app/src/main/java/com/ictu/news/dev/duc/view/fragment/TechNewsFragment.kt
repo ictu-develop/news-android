@@ -12,12 +12,11 @@ import android.widget.Toast
 import com.ictu.news.R
 import com.ictu.news.dev.duc.collection.ListNewFeedCollection
 import com.ictu.news.dev.duc.collection.NewFeedCollection
-import com.ictu.news.dev.duc.model.RequestVnreviewNewFeedModel
-import com.ictu.news.dev.duc.presenter.RequestNewFeedPresenter
+import com.ictu.news.dev.duc.presenter.RequestVnreviewNewFeedPresenter
 import com.ictu.news.dev.duc.view.adapter.RecyclerViewAdapter
 import com.ictu.news.dev.duc.view.inteface.OnLoadMore
 import com.ictu.news.dev.duc.view.inteface.OnRecyclerViewItemClickListener
-import com.ictu.news.dev.duc.view.inteface.OnRequestNewFeedResult
+import com.ictu.news.dev.duc.view.inteface.OnRequestResult
 import com.ictu.news.dev.kien.view.PostActivity
 import kotlinx.android.synthetic.main.fragment_tech_news.*
 
@@ -25,22 +24,24 @@ class TechNewsFragment : Fragment() {
 
     // Index of page
     private var index = 1
-    // Status request of newfeed
-    private var requested = false
+    // Is load more
+    private var isLoading = false
+    // Is end of Newfeed
+    private var isLast = false
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
-    private val collection by lazy { ArrayList<NewFeedCollection>() }
+    private val collection by lazy { ArrayList<NewFeedCollection?>() }
 
     // Event click item in recyclerView
     private val recyclerViewItemClickListener by lazy {
         object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View, postion: Int) {
-                if (collection[postion].date == "null" && collection[postion].date == collection[postion].description &&
-                    collection[postion].date == collection[postion].full_post && collection[postion].date == collection[postion].image &&
-                    collection[postion].date == collection[postion].full_post) {
+                if (collection[postion]!!.date == "null" && collection[postion]!!.date == collection[postion]!!.description &&
+                    collection[postion]!!.date == collection[postion]!!.full_post && collection[postion]!!.date == collection[postion]!!.image &&
+                    collection[postion]!!.date == collection[postion]!!.full_post) {
                 } else {
-                    val fullpost = collection[postion].full_post
+                    val fullpost = collection[postion]!!.full_post
                     val intent = Intent(requireContext(), PostActivity::class.java)
                     intent.putExtra("fullpost", fullpost)
                     startActivity(intent)
@@ -56,37 +57,47 @@ class TechNewsFragment : Fragment() {
     private val onLoadMore by lazy {
         object : OnLoadMore {
             override fun OnMore() {
-                collection.add(NewFeedCollection("null", "null", "null", "null", "null", "null"))
+                // Add load more layout
+                collection.add(null)
                 recyclerViewAdapter.notifyDataSetChanged()
+
+                // push index
+                index++
+
+                // Request next page
+                RequestVnreviewNewFeedPresenter(requestResult).request(index)
             }
         }
     }
 
-    // Event after requested
-    private val requestVnreviewNewFeedResult by lazy {
-        object : OnRequestNewFeedResult {
+    // Event after isLoading
+    private val requestResult by lazy {
+        object : OnRequestResult {
             override fun onDone(newFeedCollection: ListNewFeedCollection) {
-                //Toast.makeText(requireContext(), "Load Done", Toast.LENGTH_SHORT).show()
-                requested = true
-
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
+
+                recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
                 if (newFeedCollection.code == "200")
                     for (item in newFeedCollection.post)
                         collection.add(item)
 
-                //if (newFeedCollection.code == "204" && newFeedCollection.post.isEmpty())
-                //Toast.makeText(requireContext(), "Nothing to show", Toast.LENGTH_SHORT).show()
-
                 recyclerViewAdapter.notifyDataSetChanged()
+
+                if (newFeedCollection.code == "204" && newFeedCollection.post.isEmpty())
+                    isLast = true
+
+                isLoading = false
             }
 
             override fun onFail() {
-                requested = true
-
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
+
+                recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
+
+                isLoading = false
 
                 Toast.makeText(requireContext(), "Load Fail", Toast.LENGTH_SHORT).show()
             }
@@ -110,25 +121,22 @@ class TechNewsFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
 
-                // Current recycler size
-                val itemSizeNow = linearLayoutManager.itemCount
-                // last position item visible
-                val lastPositionItemVisible = linearLayoutManager.findLastVisibleItemPosition()
+                // Is scroll down
+                if (dy > 0) {
+                    // Current recycler size
+                    val itemSizeNow = linearLayoutManager.itemCount
+                    // last position item visible
+                    val lastPositionItemVisible = linearLayoutManager.findLastVisibleItemPosition()
 
-                if (itemSizeNow - 1 == lastPositionItemVisible) {
+                    if (itemSizeNow - 1 == lastPositionItemVisible) {
 
-                    // After pre page loaded then load next page
-                    if (requested) {
-                        requested = false
+                        // After pre page loaded then load next page
+                        if (!isLoading && !isLast) {
+                            isLoading = true
 
-                        // On loading
-                        onLoadMore.OnMore()
-
-                        // push index
-                        index++
-
-                        // Request next page
-                        RequestVnreviewNewFeedModel(requestVnreviewNewFeedResult).request(index)
+                            // On load more
+                            onLoadMore.OnMore()
+                        }
                     }
                 }
             }
@@ -145,6 +153,6 @@ class TechNewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         configRecyclerView()
-        RequestVnreviewNewFeedModel(requestVnreviewNewFeedResult).request(index)
+        RequestVnreviewNewFeedPresenter(requestResult).request(index)
     }
 }

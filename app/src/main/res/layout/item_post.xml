@@ -42,9 +42,4 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/item_loading"
-        layout="@layout/item_loading"
-        android:visibility="gone"/>
-
 </android.support.constraint.ConstraintLayout>
