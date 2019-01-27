@@ -4,7 +4,7 @@ class Address {
 
     companion object {
 
-        val domain = "http://80.211.52.162:2500/"
+        const val domain = "http://80.211.52.162:2500/"
 
         fun newFeed(index: Int): String {
             return "http://80.211.52.162:2500/newsfeed?page=$index"

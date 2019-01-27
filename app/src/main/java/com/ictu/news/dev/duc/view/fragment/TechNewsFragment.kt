@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.ictu.news.R
 import com.ictu.news.dev.duc.collection.ListNewFeedCollection
-import com.ictu.news.dev.duc.collection.NewFeedCollection
+import com.ictu.news.dev.duc.collection.ItemNewFeedCollection
 import com.ictu.news.dev.duc.presenter.RequestVnreviewNewFeedPresenter
 import com.ictu.news.dev.duc.view.adapter.RecyclerViewAdapter
 import com.ictu.news.dev.duc.view.inteface.OnLoadMore
 import com.ictu.news.dev.duc.view.inteface.OnRecyclerViewItemClickListener
-import com.ictu.news.dev.duc.view.inteface.OnRequestResult
-import com.ictu.news.dev.kien.view.PostActivity
+import com.ictu.news.dev.duc.view.inteface.OnRequestRssResult
+import com.ictu.news.dev.duc.view.PostActivity
 import kotlinx.android.synthetic.main.fragment_tech_news.*
 
 class TechNewsFragment : Fragment() {
@@ -31,7 +31,7 @@ class TechNewsFragment : Fragment() {
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
-    private val collection by lazy { ArrayList<NewFeedCollection?>() }
+    private val collection by lazy { ArrayList<ItemNewFeedCollection?>() }
 
     // Event click item in recyclerView
     private val recyclerViewItemClickListener by lazy {
@@ -41,9 +41,11 @@ class TechNewsFragment : Fragment() {
                     collection[postion]!!.date == collection[postion]!!.full_post && collection[postion]!!.date == collection[postion]!!.image &&
                     collection[postion]!!.date == collection[postion]!!.full_post) {
                 } else {
-                    val fullpost = collection[postion]!!.full_post
+                    val link = collection[postion]!!.link
+                    val source = collection[postion]!!.source
                     val intent = Intent(requireContext(), PostActivity::class.java)
-                    intent.putExtra("fullpost", fullpost)
+                    intent.putExtra("link", link)
+                    intent.putExtra("source", source)
                     startActivity(intent)
                 }
             }
@@ -72,26 +74,26 @@ class TechNewsFragment : Fragment() {
 
     // Event after isLoading
     private val requestResult by lazy {
-        object : OnRequestResult {
+        object : OnRequestRssResult {
             override fun onDone(newFeedCollection: ListNewFeedCollection) {
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
 
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
-                if (newFeedCollection.code == "200")
+                if (newFeedCollection.code == 200)
                     for (item in newFeedCollection.post)
                         collection.add(item)
 
                 recyclerViewAdapter.notifyDataSetChanged()
 
-                if (newFeedCollection.code == "204" && newFeedCollection.post.isEmpty())
+                if (newFeedCollection.code == 204 && newFeedCollection.post.isEmpty())
                     isLast = true
 
                 isLoading = false
             }
 
-            override fun onFail() {
+            override fun onFail(t: String) {
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
 

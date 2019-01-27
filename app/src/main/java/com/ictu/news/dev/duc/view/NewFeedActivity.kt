@@ -9,7 +9,6 @@ import com.ictu.news.dev.duc.view.fragment.TechNewsFragment
 import com.ictu.news.dev.duc.view.fragment.TechStoryFragment
 import kotlinx.android.synthetic.main.activity_new_feed.*
 
-
 class NewFeedActivity : AppCompatActivity() {
 
     // Init Fragment
@@ -31,9 +30,11 @@ class NewFeedActivity : AppCompatActivity() {
     // Config tabLayout
     private fun configTabLayout() {
         // Add new tabLayout
-        tab_layout.addTab(tab_layout.newTab().setText("NewFeed"))
-        tab_layout.addTab(tab_layout.newTab().setText("Tech News"))
-        tab_layout.addTab(tab_layout.newTab().setText("Tech Story"))
+        tab_layout.addTab(tab_layout.newTab().setText("Bảng tin"))
+        tab_layout.addTab(tab_layout.newTab().setText("C.nghệ"))
+        tab_layout.addTab(tab_layout.newTab().setText("Chuyện Coding"))
+        tab_layout.addTab(tab_layout.newTab().setText("Âm nhạc"))
+        tab_layout.addTab(tab_layout.newTab().setText("Phim ảnh"))
 
         // Event tabLayout
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -45,7 +46,7 @@ class NewFeedActivity : AppCompatActivity() {
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
                 when (p0?.text) {
-                    "NewFeed" -> {
+                    "Bảng tin" -> {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("NewFeedFrag") == null)
@@ -56,7 +57,7 @@ class NewFeedActivity : AppCompatActivity() {
                                 .commit()
                     }
 
-                    "Tech News" -> {
+                    "C.nghệ" -> {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("TechNewsFrag") == null)
@@ -67,7 +68,7 @@ class NewFeedActivity : AppCompatActivity() {
                                 .commit()
                     }
 
-                    "Tech Story" -> {
+                    "Chuyện Coding" -> {
                         hiddenFragment()
 
                         if (supportFragmentManager.findFragmentByTag("TechStoryFrag") == null)
@@ -77,7 +78,6 @@ class NewFeedActivity : AppCompatActivity() {
                             supportFragmentManager.beginTransaction().show(techStoryFragment)
                                 .commit()
                     }
-
                 }
             }
 

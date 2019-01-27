@@ -1,13 +1,13 @@
 package com.ictu.news.dev.duc.presenter
 
 import com.ictu.news.dev.duc.model.RequestToidicodedaoNewFeedModel
-import com.ictu.news.dev.duc.view.inteface.OnRequestResult
+import com.ictu.news.dev.duc.view.inteface.OnRequestRssResult
 
 
-class RequestToidicodedaoNewFeedPresenter(private val requestResult: OnRequestResult) {
+class RequestToidicodedaoNewFeedPresenter(private val requestRssResult: OnRequestRssResult) {
 
     private val requestToidicodedaoNewFeedModel by lazy {
-        RequestToidicodedaoNewFeedModel(requestResult)
+        RequestToidicodedaoNewFeedModel(requestRssResult)
     }
 
     fun request(index: Int) {

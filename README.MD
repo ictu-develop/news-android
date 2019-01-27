@@ -1,4 +1,3 @@
-<h2>News App (Android)</h2>
-<h3>Developer:</h3>
+<h2>Ứng dụng đọc báo</h2>
+<h3>Phát triển:</h3>
 <p>Minh Duc</p>
-<p>Trung Kien</p>

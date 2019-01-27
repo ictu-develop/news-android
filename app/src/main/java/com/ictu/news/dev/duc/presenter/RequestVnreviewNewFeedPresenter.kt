@@ -1,12 +1,12 @@
 package com.ictu.news.dev.duc.presenter
 
 import com.ictu.news.dev.duc.model.RequestVnreviewNewFeedModel
-import com.ictu.news.dev.duc.view.inteface.OnRequestResult
+import com.ictu.news.dev.duc.view.inteface.OnRequestRssResult
 
-class RequestVnreviewNewFeedPresenter(private val requestResult: OnRequestResult) {
+class RequestVnreviewNewFeedPresenter(private val requestRssResult: OnRequestRssResult) {
 
     private val requestVnreviewNewFeedModel by lazy {
-        RequestVnreviewNewFeedModel(requestResult)
+        RequestVnreviewNewFeedModel(requestRssResult)
     }
 
     fun request(index: Int) {

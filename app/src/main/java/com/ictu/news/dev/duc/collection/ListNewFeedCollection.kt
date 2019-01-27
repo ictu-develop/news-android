@@ -2,8 +2,8 @@ package com.ictu.news.dev.duc.collection
 
 /*Map of Json*/
 
-class ListNewFeedCollection {
-    lateinit var title: String
-    lateinit var code: String
-    val post = ArrayList<NewFeedCollection>()
-}
+class ListNewFeedCollection (
+    val title: String,
+    val code: Int,
+    val post: ArrayList<ItemNewFeedCollection>
+)

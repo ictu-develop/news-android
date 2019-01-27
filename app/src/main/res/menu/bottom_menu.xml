@@ -4,19 +4,19 @@
 
     <item
         android:id="@+id/newfeed"
-        android:title="Newfeed"
+        android:title="Bảng tin"
         android:icon="@drawable/ic_news"
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/tech"
-        android:title="Tech News"
+        android:id="@+id/tech_news"
+        android:title="C.nghệ"
         android:icon="@drawable/ic_tech_news"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/tech_story"
-        android:title="Tech Story"
+        android:title="Chuyên Coding"
         android:icon="@drawable/ic_talk"
         app:showAsAction="always"/>
 </menu>
