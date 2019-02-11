@@ -100,8 +100,6 @@ class TechStoryFragment : Fragment() {
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
                 isLoading = false
-
-                Toast.makeText(requireContext(), "Load Fail", Toast.LENGTH_SHORT).show()
             }
         }
     }

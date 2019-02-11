@@ -103,8 +103,6 @@ class NewFeedFragment : Fragment() {
                     collection.removeAt(collection.size - 1)
 
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
-
-                Toast.makeText(requireContext(), "Load Fail", Toast.LENGTH_SHORT).show()
             }
         }
     }

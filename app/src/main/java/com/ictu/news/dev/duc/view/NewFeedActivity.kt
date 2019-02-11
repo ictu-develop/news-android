@@ -2,12 +2,18 @@ package com.ictu.news.dev.duc.view
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import com.ictu.news.R
+import com.ictu.news.dev.duc.view.adapter.ViewPagerAdapter
 import com.ictu.news.dev.duc.view.fragment.NewFeedFragment
 import com.ictu.news.dev.duc.view.fragment.TechNewsFragment
 import com.ictu.news.dev.duc.view.fragment.TechStoryFragment
 import kotlinx.android.synthetic.main.activity_new_feed.*
+import android.support.v7.widget.SearchView
+import android.widget.Toast
 
 class NewFeedActivity : AppCompatActivity() {
 
@@ -15,26 +21,54 @@ class NewFeedActivity : AppCompatActivity() {
     private val newFeedFragment = NewFeedFragment()
     private val techNewsFragment = TechNewsFragment()
     private val techStoryFragment = TechStoryFragment()
+    private val listFragment = ArrayList<Fragment>()
+    private val listTabTitle = ArrayList<String>()
 
-    private fun hiddenFragment() {
-        if (supportFragmentManager.findFragmentByTag("NewFeedFrag") != null)
-            supportFragmentManager.beginTransaction().hide(newFeedFragment).commit()
+    private fun configViewPager() {
+        listFragment.add(newFeedFragment)
+        listFragment.add(techNewsFragment)
+        listFragment.add(techStoryFragment)
 
-        if (supportFragmentManager.findFragmentByTag("TechNewsFrag") != null)
-            supportFragmentManager.beginTransaction().hide(techNewsFragment).commit()
+        listTabTitle.add("Bảng tin")
+        listTabTitle.add("C.nghệ")
+        listTabTitle.add("Chuyện Coding")
+        listTabTitle.add("Âm nhạc")
+        listTabTitle.add("Phim ảnh")
 
-        if (supportFragmentManager.findFragmentByTag("TechStoryFrag") != null)
-            supportFragmentManager.beginTransaction().hide(techStoryFragment).commit()
+        new_feed_view_pager.adapter = ViewPagerAdapter(supportFragmentManager, listFragment, listTabTitle)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        menu?.let {
+            val searchItem = it.findItem(R.id.action_search)
+            val searchView = searchItem.actionView as SearchView
+            searchView.maxWidth = Integer.MAX_VALUE
+            searchView.queryHint = "Tìm kiếm"
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    Toast.makeText(this@NewFeedActivity, p0, Toast.LENGTH_SHORT).show()
+                    // clear text
+                    searchView.isIconified = true
+                    // close
+                    searchView.onActionViewCollapsed()
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    return true
+                }
+
+            })
+        }
+
+        return true
     }
 
     // Config tabLayout
     private fun configTabLayout() {
-        // Add new tabLayout
-        tab_layout.addTab(tab_layout.newTab().setText("Bảng tin"))
-        tab_layout.addTab(tab_layout.newTab().setText("C.nghệ"))
-        tab_layout.addTab(tab_layout.newTab().setText("Chuyện Coding"))
-        tab_layout.addTab(tab_layout.newTab().setText("Âm nhạc"))
-        tab_layout.addTab(tab_layout.newTab().setText("Phim ảnh"))
+        tab_layout.setupWithViewPager(new_feed_view_pager)
 
         // Event tabLayout
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -45,63 +79,28 @@ class NewFeedActivity : AppCompatActivity() {
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
-                when (p0?.text) {
-                    "Bảng tin" -> {
-                        hiddenFragment()
-
-                        if (supportFragmentManager.findFragmentByTag("NewFeedFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, newFeedFragment, "NewFeedFrag")
-                                .commit()
-                        else
-                            supportFragmentManager.beginTransaction().show(newFeedFragment)
-                                .commit()
-                    }
-
-                    "C.nghệ" -> {
-                        hiddenFragment()
-
-                        if (supportFragmentManager.findFragmentByTag("TechNewsFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, techNewsFragment, "TechNewsFrag")
-                                .commit()
-                        else
-                            supportFragmentManager.beginTransaction().show(techNewsFragment)
-                                .commit()
-                    }
-
-                    "Chuyện Coding" -> {
-                        hiddenFragment()
-
-                        if (supportFragmentManager.findFragmentByTag("TechStoryFrag") == null)
-                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, techStoryFragment, "TechStoryFrag")
-                                .commit()
-                        else
-                            supportFragmentManager.beginTransaction().show(techStoryFragment)
-                                .commit()
-                    }
-                }
             }
 
         })
     }
 
-    // Show when first open app
-    private fun showNewFeed() {
-        val posSelectDefault = tab_layout.selectedTabPosition
-        if (posSelectDefault == 0)
-            if (supportFragmentManager.findFragmentByTag("NewFeedFrag") == null)
-                supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, newFeedFragment, "NewFeedFrag")
-                    .commit()
-
+    private fun configDrawerLayout() {
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
     private fun run() {
+        configDrawerLayout()
+        configViewPager()
         configTabLayout()
-        showNewFeed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_feed)
+        setSupportActionBar(toolbar)
+        title = "Trang chủ"
         run()
     }
 }

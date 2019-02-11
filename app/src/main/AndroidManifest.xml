@@ -16,7 +16,8 @@
         android:largeHeap="true"
         android:hardwareAccelerated="true"
         android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".dev.duc.view.NewFeedActivity">
+        <activity android:name=".dev.duc.view.NewFeedActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

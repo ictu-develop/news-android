@@ -1,18 +1,17 @@
 package com.ictu.news.dev.duc.view
 
-import android.graphics.Color
-import android.graphics.Point
 import android.graphics.Typeface
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
+import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.ictu.news.R
 import com.ictu.news.dev.duc.collection.PostContentCollection
@@ -27,6 +26,8 @@ class PostActivity : AppCompatActivity() {
     private val onRequestPostContent by lazy {
         object : OnRequestPostContentResult {
             override fun onDone(postContentResult: PostContentCollection) {
+                progress_bar.visibility = GONE
+                scroll_view.visibility = VISIBLE
                 setTitle(postContentResult.post_content.post_name)
                 for (text in postContentResult.post_content.content)
                     setContent(text)
@@ -55,6 +56,10 @@ class PostActivity : AppCompatActivity() {
             content.contains("<IFRAME>") && content.contains("</IFRAME>") -> {
                 val iframe = content.substring("<IFRAME>".length, content.lastIndexOf("</IFRAME>"))
                 setYoutubeView(iframe)
+            }
+            content.contains("<STRONG>") && content.contains("</STRONG>") -> {
+                val text = content.substring("<STRONG>".length , content.lastIndexOf("</STRONG>"))
+                setTextHeader(text)
             }
             else -> {
                 setText(content)
@@ -107,6 +112,7 @@ class PostActivity : AppCompatActivity() {
         val textView = TextView(this)
         textView.text = content + "\n"
         textView.textSize = 17f
+        textView.setTextColor(resources.getColor(R.color.colorGray))
         post_content.addView(textView)
     }
 
@@ -138,6 +144,15 @@ class PostActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
@@ -145,7 +160,7 @@ class PostActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title = ""
+        title = "Quay lại"
 
         run()
     }
