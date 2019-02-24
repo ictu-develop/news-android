@@ -5,15 +5,16 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.View.*
 import com.ictu.news.R
 import com.ictu.news.dev.duc.view.adapter.ViewPagerAdapter
 import com.ictu.news.dev.duc.view.fragment.NewFeedFragment
+import com.ictu.news.dev.duc.view.fragment.SearchFragment
 import com.ictu.news.dev.duc.view.fragment.TechNewsFragment
 import com.ictu.news.dev.duc.view.fragment.TechStoryFragment
 import kotlinx.android.synthetic.main.activity_new_feed.*
-import android.support.v7.widget.SearchView
-import android.widget.Toast
 
 class NewFeedActivity : AppCompatActivity() {
 
@@ -22,6 +23,7 @@ class NewFeedActivity : AppCompatActivity() {
     private val techNewsFragment = TechNewsFragment()
     private val techStoryFragment = TechStoryFragment()
     private val listFragment = ArrayList<Fragment>()
+
     private val listTabTitle = ArrayList<String>()
 
     private fun configViewPager() {
@@ -48,11 +50,31 @@ class NewFeedActivity : AppCompatActivity() {
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-                    Toast.makeText(this@NewFeedActivity, p0, Toast.LENGTH_SHORT).show()
-                    // clear text
+                    // Clear text
                     searchView.isIconified = true
-                    // close
+                    // Close
                     searchView.onActionViewCollapsed()
+
+                    // Request to search
+                    p0?.let {
+                        new_feed_view_pager.visibility = GONE
+                        tab_layout.visibility = INVISIBLE
+                        search_title.visibility = VISIBLE
+
+                        val bundle = Bundle()
+                        bundle.putString("key_word", p0)
+
+                        val searchFragment = SearchFragment()
+                        searchFragment.arguments = bundle
+
+                        if (supportFragmentManager.findFragmentByTag("searchFragment") == null)
+                            supportFragmentManager.beginTransaction().add(R.id.new_feed_content_layout, searchFragment, "searchFragment")
+                                .commit()
+                        else
+                            supportFragmentManager.beginTransaction().replace(R.id.new_feed_content_layout, searchFragment, "searchFragment")
+                                .commit()
+                    }
+
                     return true
                 }
 
@@ -84,6 +106,7 @@ class NewFeedActivity : AppCompatActivity() {
         })
     }
 
+
     private fun configDrawerLayout() {
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
@@ -102,5 +125,23 @@ class NewFeedActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         title = "Trang chủ"
         run()
+    }
+
+    override fun onBackPressed() {
+
+        var exit = true
+
+        supportFragmentManager.findFragmentByTag("searchFragment")?.let {
+            supportFragmentManager.beginTransaction().remove(it)
+                .commit()
+            exit = false
+            new_feed_view_pager.visibility = VISIBLE
+            tab_layout.visibility = VISIBLE
+            search_title.visibility = GONE
+        }
+
+        if (exit)
+            super.onBackPressed()
+
     }
 }

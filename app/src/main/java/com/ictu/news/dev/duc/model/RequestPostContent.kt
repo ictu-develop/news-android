@@ -12,7 +12,6 @@ class RequestPostContent(val onRequestPostContentResult: OnRequestPostContentRes
 
     // Request to post content
     fun request(source: String, link: String) {
-
         when (source) {
             "vnreview" -> {
                 call = RetrofitCommon.apiService.loadPostContentVnreview(link)

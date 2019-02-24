@@ -1,7 +1,7 @@
 package com.ictu.news.dev.duc.model
 
 import android.util.Log
-import com.ictu.news.dev.duc.collection.ListNewFeedCollection
+import com.ictu.news.dev.duc.collection.NewFeedCollection
 import com.ictu.news.dev.duc.view.inteface.OnRequestRssResult
 import retrofit2.Call
 import retrofit2.Callback
@@ -9,15 +9,15 @@ import retrofit2.Response
 
 class RequestToidicodedaoNewFeedModel (private val requestRssResult: OnRequestRssResult){
 
-    lateinit var call: Call<ListNewFeedCollection>
+    lateinit var call: Call<NewFeedCollection>
 
 
     // Request to Vnreview Newfeed
     fun request(index: Int) {
         call = RetrofitCommon.apiService.loadToidicodedaoNewFeed(index.toString())
 
-        call.enqueue(object : Callback<ListNewFeedCollection> {
-            override fun onResponse(call: Call<ListNewFeedCollection>, response: Response<ListNewFeedCollection>) {
+        call.enqueue(object : Callback<NewFeedCollection> {
+            override fun onResponse(call: Call<NewFeedCollection>, response: Response<NewFeedCollection>) {
                 val newsFeedList = response.body()
                 newsFeedList?.let {
                     if (it.code == 200)
@@ -29,7 +29,7 @@ class RequestToidicodedaoNewFeedModel (private val requestRssResult: OnRequestRs
                 }
             }
 
-            override fun onFailure(call: Call<ListNewFeedCollection>, t: Throwable) {
+            override fun onFailure(call: Call<NewFeedCollection>, t: Throwable) {
                 Log.d("Error_request", "$t")
             }
         })

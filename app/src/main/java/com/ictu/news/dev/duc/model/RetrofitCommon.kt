@@ -15,7 +15,7 @@ class RetrofitCommon {
 
         // Create Api Service
         val apiService by lazy {
-            retrofit.create(ApiInterface::class.java)
+            retrofit.create(Api::class.java)
         }
     }
 }

@@ -8,10 +8,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 
 import com.ictu.news.R
-import com.ictu.news.dev.duc.collection.ListNewFeedCollection
+import com.ictu.news.dev.duc.collection.NewFeedCollection
 import com.ictu.news.dev.duc.collection.ItemNewFeedCollection
 import com.ictu.news.dev.duc.presenter.RequestNewFeedPresenter
 import com.ictu.news.dev.duc.view.adapter.RecyclerViewAdapter
@@ -78,15 +77,16 @@ class NewFeedFragment : Fragment() {
     // Event after isLoading
     private val requestResult by lazy {
         object : OnRequestRssResult {
-            override fun onDone(newFeedCollection: ListNewFeedCollection) {
+            override fun onDone(newFeedCollection: NewFeedCollection) {
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
 
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
-                if (newFeedCollection.code == 200)
-                    for (item in newFeedCollection.post)
-                        collection.add(item)
+                if (newFeedCollection.code == 200) {
+                    collection.clear()
+                    collection.addAll(newFeedCollection.post)
+                }
 
                 recyclerViewAdapter.notifyDataSetChanged()
 
@@ -107,11 +107,9 @@ class NewFeedFragment : Fragment() {
         }
     }
 
-    private fun init() {
-        recyclerViewAdapter = RecyclerViewAdapter(requireContext(), collection, recyclerViewItemClickListener)
-    }
-
     private fun configRecyclerView() {
+        recyclerViewAdapter = RecyclerViewAdapter(requireContext(), collection, recyclerViewItemClickListener)
+
         // Config layoutManager
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
 
@@ -154,7 +152,6 @@ class NewFeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
         configRecyclerView()
         RequestNewFeedPresenter(requestResult).request(index)
     }
