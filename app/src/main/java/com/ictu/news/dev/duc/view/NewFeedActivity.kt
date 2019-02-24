@@ -128,7 +128,6 @@ class NewFeedActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         var exit = true
 
         supportFragmentManager.findFragmentByTag("searchFragment")?.let {
