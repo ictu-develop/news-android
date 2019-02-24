@@ -80,10 +80,9 @@ class TechStoryFragment : Fragment() {
 
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
-                if (newFeedCollection.code == 200) {
-                    collection.clear()
-                    collection.addAll(newFeedCollection.post)
-                }
+                if (newFeedCollection.code == 200)
+                    for (item in newFeedCollection.post)
+                        collection.add(item)
 
                 recyclerViewAdapter.notifyDataSetChanged()
 
