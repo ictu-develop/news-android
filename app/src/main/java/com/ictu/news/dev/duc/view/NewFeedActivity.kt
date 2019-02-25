@@ -60,6 +60,7 @@ class NewFeedActivity : AppCompatActivity() {
                         new_feed_view_pager.visibility = GONE
                         tab_layout.visibility = INVISIBLE
                         search_title.visibility = VISIBLE
+                        title = "Tìm kiếm"
 
                         val bundle = Bundle()
                         bundle.putString("key_word", p0)
@@ -137,6 +138,7 @@ class NewFeedActivity : AppCompatActivity() {
             new_feed_view_pager.visibility = VISIBLE
             tab_layout.visibility = VISIBLE
             search_title.visibility = GONE
+            title = "Trang chủ"
         }
 
         if (exit)

@@ -1,5 +1,6 @@
 package com.ictu.news.dev.duc.view.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -27,6 +28,7 @@ class SearchFragment : Fragment() {
     private lateinit var requestSearchPresenter: RequestSearchPresenter
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
     private var searchResult = ArrayList<ItemNewFeedCollection?>()
+    private var keyWord: String? = ""
 
     private val onRequestSearchResult = object : OnRequestSearchResult {
         override fun onEmpty(result: NewFeedCollection) {
@@ -38,7 +40,11 @@ class SearchFragment : Fragment() {
             progress_bar.visibility = GONE
             recycler_view.visibility = VISIBLE
             (requireActivity() as NewFeedActivity).apply {
-                this.search_title.text = "Không có kết quả"
+                keyWord?.let {
+                    (requireActivity() as NewFeedActivity).apply {
+                        this.search_title.text = "Không có kết quả cho '${it}'"
+                    }
+                }
             }
         }
 
@@ -51,8 +57,10 @@ class SearchFragment : Fragment() {
             progress_bar.visibility = GONE
             recycler_view.visibility = VISIBLE
 
-            (requireActivity() as NewFeedActivity).apply {
-                this.search_title.text = "Kết quả"
+            keyWord?.let {
+                (requireActivity() as NewFeedActivity).apply {
+                    this.search_title.text = "Kết quả cho '${it}'"
+                }
             }
         }
 
@@ -103,13 +111,17 @@ class SearchFragment : Fragment() {
         recycler_view.adapter = recyclerViewAdapter
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configRecyclerView()
 
-        val keyWord = arguments?.getString("key_word")
+        keyWord = arguments?.getString("key_word")
 
         keyWord?.let {
+            (requireActivity() as NewFeedActivity).apply {
+                this.search_title.text = "Kết quả cho '${it}'"
+            }
             requestSearchPresenter = RequestSearchPresenter(onRequestSearchResult)
             requestSearchPresenter.search(it)
         }
