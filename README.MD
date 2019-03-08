@@ -1,3 +1,2 @@
 <h2>Ứng dụng đọc báo</h2>
-<h3>Phát triển:</h3>
-<p>Minh Duc</p>
+<strong><p>Bài tập lớn môn Android</p></strong>
