@@ -13,7 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".dev.duc.view.NewFeedActivity"
+        tools:context=".dev.boong.view.NewFeedActivity"
         android:background="@color/colorWhite"
         android:id="@+id/new_feed_activity">
 
