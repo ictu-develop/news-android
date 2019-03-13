@@ -9,17 +9,53 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ictu.news.R
-import com.ictu.news.dev.boong.collection.NewFeedCollection
 import com.ictu.news.dev.boong.collection.ItemNewFeedCollection
+import com.ictu.news.dev.boong.collection.NewFeedCollection
+import com.ictu.news.dev.boong.presenter.RequestNewFeedPresenter
+import com.ictu.news.dev.boong.presenter.RequestToidicodedaoNewFeedPresenter
 import com.ictu.news.dev.boong.presenter.RequestVnreviewNewFeedPresenter
-import com.ictu.news.dev.boong.view.adapter.RecyclerViewAdapter
-import com.ictu.news.dev.boong.view.inteface.OnLoadMore
-import com.ictu.news.dev.boong.view.inteface.OnRecyclerViewItemClickListener
-import com.ictu.news.dev.boong.view.inteface.OnRequestRssResult
 import com.ictu.news.dev.boong.view.PostActivity
-import kotlinx.android.synthetic.main.fragment_tech_news.*
+import com.ictu.news.dev.boong.view.adapter.RecyclerViewAdapter
+import com.ictu.news.dev.boong.view.interface_.OnLoadMore
+import com.ictu.news.dev.boong.view.interface_.OnRecyclerViewItemClickListener
+import com.ictu.news.dev.boong.view.interface_.OnRequestRssResult
+import kotlinx.android.synthetic.main.fragment_feed.*
 
-class TechNewsFragment : Fragment() {
+class FeedFragment : Fragment() {
+
+    companion object {
+
+        val NEWFEED = 1
+        val TECHNEW = 2
+        val TECHSTORY = 3
+        val SEARCH = 4
+
+        fun tab(type: Int): FeedFragment {
+            val feedFragment = FeedFragment()
+            val bundle = Bundle()
+
+            when (type) {
+                NEWFEED -> {
+                    bundle.putInt("type", NEWFEED)
+                    feedFragment.arguments = bundle
+                }
+                TECHNEW -> {
+                    bundle.putInt("type", TECHNEW)
+                    feedFragment.arguments = bundle
+                }
+                TECHSTORY -> {
+                    bundle.putInt("type", TECHSTORY)
+                    feedFragment.arguments = bundle
+                }
+                SEARCH -> {
+                    bundle.putInt("type", SEARCH)
+                    feedFragment.arguments = bundle
+                }
+            }
+
+            return feedFragment
+        }
+    }
 
     // Index of page
     private var index = 1
@@ -27,10 +63,12 @@ class TechNewsFragment : Fragment() {
     private var isLoading = false
     // Is end of Newfeed
     private var isLast = false
+    private var isType = -1
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
     private val collection by lazy { ArrayList<ItemNewFeedCollection?>() }
+
 
     // Event click item in recyclerView
     private val recyclerViewItemClickListener by lazy {
@@ -38,7 +76,8 @@ class TechNewsFragment : Fragment() {
             override fun onItemClick(view: View, postion: Int) {
                 if (collection[postion]!!.date == "null" && collection[postion]!!.date == collection[postion]!!.description &&
                     collection[postion]!!.date == collection[postion]!!.full_post && collection[postion]!!.date == collection[postion]!!.image &&
-                    collection[postion]!!.date == collection[postion]!!.full_post) {
+                    collection[postion]!!.date == collection[postion]!!.full_post
+                ) {
                 } else {
                     val link = collection[postion]!!.link
                     val source = collection[postion]!!.source
@@ -66,7 +105,17 @@ class TechNewsFragment : Fragment() {
                 index++
 
                 // Request next page
-                RequestVnreviewNewFeedPresenter(requestResult).request(index)
+                when(isType) {
+                    NEWFEED -> {
+                        RequestNewFeedPresenter(requestResult).request(index)
+                    }
+                    TECHNEW -> {
+                        RequestVnreviewNewFeedPresenter(requestResult).request(index)
+                    }
+                    TECHSTORY -> {
+                        RequestToidicodedaoNewFeedPresenter(requestResult).request(index)
+                    }
+                }
             }
         }
     }
@@ -87,18 +136,18 @@ class TechNewsFragment : Fragment() {
                 recyclerViewAdapter.notifyDataSetChanged()
 
                 if (newFeedCollection.code == 204 && newFeedCollection.post.isEmpty())
-                    isLast = true
+                    isLast = false
 
                 isLoading = false
             }
 
             override fun onFail(t: String) {
+                isLoading = false
+
                 if (index > 1)
                     collection.removeAt(collection.size - 1)
 
                 recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
-
-                isLoading = false
             }
         }
     }
@@ -142,13 +191,29 @@ class TechNewsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tech_news, container, false)
-
+        return inflater.inflate(R.layout.fragment_feed, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configRecyclerView()
-        RequestVnreviewNewFeedPresenter(requestResult).request(index)
+
+        val type = arguments?.getInt("type")
+
+        type?.let {
+            isType = it
+            configRecyclerView()
+
+            when(isType) {
+                NEWFEED -> {
+                    RequestNewFeedPresenter(requestResult).request(index)
+                }
+                TECHNEW -> {
+                    RequestVnreviewNewFeedPresenter(requestResult).request(index)
+                }
+                TECHSTORY -> {
+                    RequestToidicodedaoNewFeedPresenter(requestResult).request(index)
+                }
+            }
+        }
     }
 }

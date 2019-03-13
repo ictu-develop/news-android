@@ -10,32 +10,23 @@ import android.view.Menu
 import android.view.View.*
 import com.ictu.news.R
 import com.ictu.news.dev.boong.view.adapter.ViewPagerAdapter
-import com.ictu.news.dev.boong.view.fragment.NewFeedFragment
-import com.ictu.news.dev.boong.view.fragment.SearchFragment
-import com.ictu.news.dev.boong.view.fragment.TechNewsFragment
-import com.ictu.news.dev.boong.view.fragment.TechStoryFragment
+import com.ictu.news.dev.boong.view.fragment.*
 import kotlinx.android.synthetic.main.activity_new_feed.*
 
 class NewFeedActivity : AppCompatActivity() {
 
-    // Init Fragment
-    private val newFeedFragment = NewFeedFragment()
-    private val techNewsFragment = TechNewsFragment()
-    private val techStoryFragment = TechStoryFragment()
     private val listFragment = ArrayList<Fragment>()
 
     private val listTabTitle = ArrayList<String>()
 
     private fun configViewPager() {
-        listFragment.add(newFeedFragment)
-        listFragment.add(techNewsFragment)
-        listFragment.add(techStoryFragment)
+        listFragment.add(FeedFragment.tab(1))
+        listFragment.add(FeedFragment.tab(2))
+        listFragment.add(FeedFragment.tab(3))
 
         listTabTitle.add("Bảng tin")
         listTabTitle.add("C.nghệ")
         listTabTitle.add("Chuyện Coding")
-        listTabTitle.add("Âm nhạc")
-        listTabTitle.add("Phim ảnh")
 
         new_feed_view_pager.adapter = ViewPagerAdapter(supportFragmentManager, listFragment, listTabTitle)
     }

@@ -2,7 +2,7 @@ package com.ictu.news.dev.boong.model
 
 import android.util.Log
 import com.ictu.news.dev.boong.collection.NewFeedCollection
-import com.ictu.news.dev.boong.view.inteface.OnRequestSearchResult
+import com.ictu.news.dev.boong.view.interface_.OnRequestSearchResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

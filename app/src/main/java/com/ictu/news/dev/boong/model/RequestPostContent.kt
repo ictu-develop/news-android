@@ -1,7 +1,7 @@
 package com.ictu.news.dev.boong.model
 
 import com.ictu.news.dev.boong.collection.PostContentCollection
-import com.ictu.news.dev.boong.view.inteface.OnRequestPostContentResult
+import com.ictu.news.dev.boong.view.interface_.OnRequestPostContentResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

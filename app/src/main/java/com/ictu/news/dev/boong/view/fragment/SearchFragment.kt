@@ -17,8 +17,8 @@ import com.ictu.news.dev.boong.presenter.RequestSearchPresenter
 import com.ictu.news.dev.boong.view.NewFeedActivity
 import com.ictu.news.dev.boong.view.PostActivity
 import com.ictu.news.dev.boong.view.adapter.RecyclerViewAdapter
-import com.ictu.news.dev.boong.view.inteface.OnRecyclerViewItemClickListener
-import com.ictu.news.dev.boong.view.inteface.OnRequestSearchResult
+import com.ictu.news.dev.boong.view.interface_.OnRecyclerViewItemClickListener
+import com.ictu.news.dev.boong.view.interface_.OnRequestSearchResult
 import kotlinx.android.synthetic.main.activity_new_feed.*
 import kotlinx.android.synthetic.main.fragment_search.*
 

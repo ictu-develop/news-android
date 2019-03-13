@@ -1,4 +1,4 @@
-package com.ictu.news.dev.boong.view.inteface
+package com.ictu.news.dev.boong.view.interface_
 
 import com.ictu.news.dev.boong.collection.NewFeedCollection
 

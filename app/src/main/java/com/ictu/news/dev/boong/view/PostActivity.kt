@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import com.ictu.news.R
 import com.ictu.news.dev.boong.collection.PostContentCollection
 import com.ictu.news.dev.boong.model.RequestPostContent
-import com.ictu.news.dev.boong.view.inteface.OnRequestPostContentResult
+import com.ictu.news.dev.boong.view.interface_.OnRequestPostContentResult
 import kotlinx.android.synthetic.main.activity_post.*
 
 class PostActivity : AppCompatActivity() {

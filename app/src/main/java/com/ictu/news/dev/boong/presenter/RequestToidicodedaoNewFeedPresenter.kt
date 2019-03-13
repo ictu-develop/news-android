@@ -1,7 +1,7 @@
 package com.ictu.news.dev.boong.presenter
 
 import com.ictu.news.dev.boong.model.RequestToidicodedaoNewFeedModel
-import com.ictu.news.dev.boong.view.inteface.OnRequestRssResult
+import com.ictu.news.dev.boong.view.interface_.OnRequestRssResult
 
 
 class RequestToidicodedaoNewFeedPresenter(private val requestRssResult: OnRequestRssResult) {

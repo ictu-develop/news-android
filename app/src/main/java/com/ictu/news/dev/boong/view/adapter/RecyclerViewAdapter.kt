@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.ictu.news.R
 import com.ictu.news.dev.boong.collection.ItemNewFeedCollection
-import com.ictu.news.dev.boong.view.inteface.OnRecyclerViewItemClickListener
+import com.ictu.news.dev.boong.view.interface_.OnRecyclerViewItemClickListener
 import kotlinx.android.synthetic.main.item_first_post.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
 
