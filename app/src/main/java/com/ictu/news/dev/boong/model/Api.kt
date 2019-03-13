@@ -1,5 +1,6 @@
 package com.ictu.news.dev.boong.model
 
+import com.ictu.news.address.Address
 import com.ictu.news.dev.boong.collection.NewFeedCollection
 import com.ictu.news.dev.boong.collection.PostContentCollection
 import retrofit2.Call
@@ -16,12 +17,12 @@ interface Api {
     @GET("newsfeed/toidicodedao")
     fun loadToidicodedaoNewFeed(@Query("page") index: String): Call<NewFeedCollection>
 
-    @GET("https://news-api-vn.herokuapp.com/post/vnreview")
+    @GET("${Address.domain}/post/vnreview")
     fun loadPostContentVnreview(@Query("post_url") post_url: String): Call<PostContentCollection>
 
-    @GET("https://news-api-vn.herokuapp.com/post/toidicodedao")
+    @GET("${Address.domain}/post/toidicodedao")
     fun loadPostContentToidicodedao(@Query("post_url") post_url: String): Call<PostContentCollection>
 
-    @GET("https://news-api-vn.herokuapp.com/search")
+    @GET("${Address.domain}/search")
     fun loadSearch(@Query("keyword") keyword: String): Call<NewFeedCollection>
 }
