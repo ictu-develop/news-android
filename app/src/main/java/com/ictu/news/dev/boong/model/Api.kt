@@ -16,12 +16,12 @@ interface Api {
     @GET("newsfeed/toidicodedao")
     fun loadToidicodedaoNewFeed(@Query("page") index: String): Call<NewFeedCollection>
 
-    @GET("http://80.211.52.162:2500/post/vnreview")
+    @GET("https://news-api-vn.herokuapp.com/post/vnreview")
     fun loadPostContentVnreview(@Query("post_url") post_url: String): Call<PostContentCollection>
 
-    @GET("http://80.211.52.162:2500/post/toidicodedao")
+    @GET("https://news-api-vn.herokuapp.com/post/toidicodedao")
     fun loadPostContentToidicodedao(@Query("post_url") post_url: String): Call<PostContentCollection>
 
-    @GET("http://80.211.52.162:2500/search")
+    @GET("https://news-api-vn.herokuapp.com/search")
     fun loadSearch(@Query("keyword") keyword: String): Call<NewFeedCollection>
 }
