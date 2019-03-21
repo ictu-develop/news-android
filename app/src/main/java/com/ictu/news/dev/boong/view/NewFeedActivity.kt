@@ -98,15 +98,7 @@ class NewFeedActivity : AppCompatActivity() {
         })
     }
 
-
-    private fun configDrawerLayout() {
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-    }
-
     private fun run() {
-        configDrawerLayout()
         configViewPager()
         configTabLayout()
     }
@@ -115,7 +107,7 @@ class NewFeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_feed)
         setSupportActionBar(toolbar)
-        title = "Trang chủ"
+        title = ""
         run()
     }
 
@@ -125,11 +117,12 @@ class NewFeedActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentByTag("searchFragment")?.let {
             supportFragmentManager.beginTransaction().remove(it)
                 .commit()
+
             exit = false
             new_feed_view_pager.visibility = VISIBLE
             tab_layout.visibility = VISIBLE
             search_title.visibility = GONE
-            title = "Trang chủ"
+            title = ""
         }
 
         if (exit)

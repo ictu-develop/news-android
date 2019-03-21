@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_feed.*
 
 class FeedFragment : Fragment() {
 
+    // tuong duong voi static trong Java
     companion object {
 
         val NEWFEED = 1
@@ -66,89 +67,82 @@ class FeedFragment : Fragment() {
     private var isType = -1
     private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
-    // collection sẽ không được khởi tạo trừ khi biến được sử dụng lần đầu tiên
-    private val collection by lazy { ArrayList<ItemNewFeedCollection?>() }
+    private val collection = ArrayList<ItemNewFeedCollection?>()
 
 
     // Event click item in recyclerView
-    private val recyclerViewItemClickListener by lazy {
-        object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View, postion: Int) {
-                if (collection[postion]!!.date == "null" && collection[postion]!!.date == collection[postion]!!.description &&
-                    collection[postion]!!.date == collection[postion]!!.full_post && collection[postion]!!.date == collection[postion]!!.image &&
-                    collection[postion]!!.date == collection[postion]!!.full_post
-                ) {
-                } else {
-                    val link = collection[postion]!!.link
-                    val source = collection[postion]!!.source
-                    val intent = Intent(requireContext(), PostActivity::class.java)
-                    intent.putExtra("link", link)
-                    intent.putExtra("source", source)
-                    startActivity(intent)
-                }
+    private val recyclerViewItemClickListener = object : OnRecyclerViewItemClickListener {
+        override fun onItemClick(view: View, postion: Int) {
+            if (collection[postion]!!.date == "null" && collection[postion]!!.date == collection[postion]!!.description &&
+                collection[postion]!!.date == collection[postion]!!.full_post && collection[postion]!!.date == collection[postion]!!.image &&
+                collection[postion]!!.date == collection[postion]!!.full_post
+            ) {
+            } else {
+                val link = collection[postion]!!.link
+                val source = collection[postion]!!.source
+                val intent = Intent(requireContext(), PostActivity::class.java)
+                intent.putExtra("link", link)
+                intent.putExtra("source", source)
+                startActivity(intent)
             }
+        }
 
-            override fun onLongItemClick(view: View, postion: Int) {
-            }
+        override fun onLongItemClick(view: View, postion: Int) {
         }
     }
 
     // Event On Load More
-    private val onLoadMore by lazy {
-        object : OnLoadMore {
-            override fun OnMore() {
-                // Add load more layout
-                collection.add(null)
-                recyclerViewAdapter.notifyDataSetChanged()
+    private val onLoadMore = object : OnLoadMore {
+        override fun OnMore() {
+            // Add load more layout
+            collection.add(null)
+            recyclerViewAdapter.notifyDataSetChanged()
 
-                // push index
-                index++
+            // push index
+            index++
 
-                // Request next page
-                when(isType) {
-                    NEWFEED -> {
-                        RequestNewFeedPresenter(requestResult).request(index)
-                    }
-                    TECHNEW -> {
-                        RequestVnreviewNewFeedPresenter(requestResult).request(index)
-                    }
-                    TECHSTORY -> {
-                        RequestToidicodedaoNewFeedPresenter(requestResult).request(index)
-                    }
+            // Request next page
+            when (isType) {
+                NEWFEED -> {
+                    RequestNewFeedPresenter(requestResult).request(index)
+                }
+                TECHNEW -> {
+                    RequestVnreviewNewFeedPresenter(requestResult).request(index)
+                }
+                TECHSTORY -> {
+                    RequestToidicodedaoNewFeedPresenter(requestResult).request(index)
                 }
             }
         }
     }
 
     // Event after isLoading
-    private val requestResult by lazy {
-        object : OnRequestRssResult {
-            override fun onDone(newFeedCollection: NewFeedCollection) {
-                if (index > 1)
-                    collection.removeAt(collection.size - 1)
+    private val requestResult = object : OnRequestRssResult {
+        override fun onDone(newFeedCollection: NewFeedCollection) {
+            if (index > 1)
+                collection.removeAt(collection.size - 1)
 
-                recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
+            recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
 
-                if (newFeedCollection.code == 200)
-                    for (item in newFeedCollection.post)
-                        collection.add(item)
+            if (newFeedCollection.code == 200)
+                for (item in newFeedCollection.post)
+                    collection.add(item)
 
-                recyclerViewAdapter.notifyDataSetChanged()
+            recyclerViewAdapter.notifyDataSetChanged()
 
-                if (newFeedCollection.code == 204 && newFeedCollection.post.isEmpty())
-                    isLast = false
+            if (newFeedCollection.code == 204 && newFeedCollection.post.isEmpty())
+                isLast = true
 
-                isLoading = false
-            }
+            isLoading = false
+        }
 
-            override fun onFail(t: String) {
-                isLoading = false
+        override fun onFail(t: String) {
+            isLoading = false
 
-                if (index > 1)
-                    collection.removeAt(collection.size - 1)
+            if (index > 1)
+                collection.removeAt(collection.size - 1)
 
-                recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
-            }
+            recyclerViewAdapter.notifyItemRemoved(collection.size - 1)
         }
     }
 
@@ -203,7 +197,7 @@ class FeedFragment : Fragment() {
             isType = it
             configRecyclerView()
 
-            when(isType) {
+            when (isType) {
                 NEWFEED -> {
                     RequestNewFeedPresenter(requestResult).request(index)
                 }

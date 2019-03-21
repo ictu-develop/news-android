@@ -5,9 +5,8 @@ import com.ictu.news.dev.boong.view.interface_.OnRequestRssResult
 
 class RequestNewFeedPresenter (private val requestRssResult: OnRequestRssResult) {
 
-    private val requestNewFeedModel by lazy {
-        RequestNewFeedModel(requestRssResult)
-    }
+    private val requestNewFeedModel = RequestNewFeedModel(requestRssResult)
+
 
     fun request(index: Int) {
         requestNewFeedModel.request(index)
